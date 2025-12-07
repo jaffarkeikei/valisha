@@ -507,10 +507,6 @@ const Hero = () => {
               transition={{ delay: 0.6 }}
               className="flex items-center gap-4 mt-10 justify-center lg:justify-start"
             >
-              <div className="glass px-5 py-2.5 rounded-full">
-                <span className="text-valisha-400 font-semibold">195</span>
-                <span className="text-gray-400 ml-2">countries available</span>
-              </div>
             </motion.div>
           </div>
 

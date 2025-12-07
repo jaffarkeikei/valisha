@@ -12,7 +12,7 @@ const FAQ = () => {
     },
     {
       question: 'How long until I receive it?',
-      answer: 'We ship within 2 days. Delivery in Kenya takes 3-5 days. International takes 7-14 days.',
+      answer: 'Minutes to days.',
     },
     {
       question: 'Can I get any flag?',
@@ -20,7 +20,7 @@ const FAQ = () => {
     },
     {
       question: 'What payment do you accept?',
-      answer: 'M-Pesa, Visa, Mastercard, and PayPal.',
+      answer: 'Visa, Mastercard, and PayPal.',
     },
     {
       question: 'Can I order for someone else?',
