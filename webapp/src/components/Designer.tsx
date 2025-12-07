@@ -313,7 +313,7 @@ const Designer = () => {
             whileTap={{ scale: 0.98 }}
             className="w-full mt-8 py-4 bg-gradient-to-r from-valisha-500 via-valisha-400 to-kente-gold rounded-xl text-lg font-medium text-earth-950 flex items-center justify-center gap-2"
           >
-            Order Now
+            Order Soon
             <ChevronRight size={20} />
           </motion.button>
         </motion.div>
