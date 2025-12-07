@@ -223,40 +223,50 @@ const WavyFlagParade = () => {
 
   const currentFlag = FLAGS[currentCode]
 
+  // Separate effect for countdown logic
   useEffect(() => {
     if (shuffledFlags.length === 0) return
 
-    // Countdown timer - 3 seconds before showing name
-    const countdownInterval = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          setShowName(true)
-          return 0
-        }
-        return prev - 1
-      })
+    // Reset state for new flag
+    setCountdown(5)
+    setShowName(false)
+  }, [currentIndex, shuffledFlags.length])
+
+  // Countdown timer effect
+  useEffect(() => {
+    if (shuffledFlags.length === 0) return
+    if (showName) return // Don't count when showing name
+
+    const timer = setTimeout(() => {
+      if (countdown > 1) {
+        setCountdown(countdown - 1)
+      } else if (countdown === 1) {
+        setCountdown(0)
+        setShowName(true)
+      }
     }, 1000)
 
-    // Move to next flag after 7 seconds total (5s countdown + 2s showing name)
-    const flagInterval = setInterval(() => {
+    return () => clearTimeout(timer)
+  }, [countdown, showName, shuffledFlags.length])
+
+  // Move to next flag effect
+  useEffect(() => {
+    if (shuffledFlags.length === 0) return
+    if (!showName) return // Only start timer after name is shown
+
+    const nextFlagTimer = setTimeout(() => {
       setCurrentIndex(prev => {
         const next = prev + 1
-        // Reshuffle when we've gone through all flags
         if (next >= shuffledFlags.length) {
           setShuffledFlags(shuffleArray(allFlagCodes))
           return 0
         }
         return next
       })
-      setCountdown(5)
-      setShowName(false)
-    }, 7000)
+    }, 2000) // Show name for 2 seconds
 
-    return () => {
-      clearInterval(countdownInterval)
-      clearInterval(flagInterval)
-    }
-  }, [shuffledFlags.length, allFlagCodes])
+    return () => clearTimeout(nextFlagTimer)
+  }, [showName, shuffledFlags.length, allFlagCodes])
 
   const beadSize = 12
   const beadsPerRow = 20
@@ -427,8 +437,10 @@ const FlagBead = ({ colors, size = 32 }: { colors: string[], size?: number }) =>
 const Hero = () => {
   return (
     <section className="min-h-screen relative pt-28 pb-16 px-6 overflow-hidden flex items-center">
-      {/* Artistic flowing flags background */}
-      <FlowingFlags />
+      {/* Artistic flowing flags background - dimmed */}
+      <div className="opacity-30">
+        <FlowingFlags />
+      </div>
 
       {/* Subtle gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-earth-950 via-transparent to-earth-950 pointer-events-none" />
