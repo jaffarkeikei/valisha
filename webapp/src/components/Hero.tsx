@@ -211,7 +211,7 @@ const WavyFlagParade = () => {
 
   const [shuffledFlags, setShuffledFlags] = useState<string[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [countdown, setCountdown] = useState(3)
+  const [countdown, setCountdown] = useState(5)
   const [showName, setShowName] = useState(false)
 
   // Initialize shuffled flags on mount
@@ -237,7 +237,7 @@ const WavyFlagParade = () => {
       })
     }, 1000)
 
-    // Move to next flag after 5 seconds total (3s countdown + 2s showing name)
+    // Move to next flag after 7 seconds total (5s countdown + 2s showing name)
     const flagInterval = setInterval(() => {
       setCurrentIndex(prev => {
         const next = prev + 1
@@ -248,9 +248,9 @@ const WavyFlagParade = () => {
         }
         return next
       })
-      setCountdown(3)
+      setCountdown(5)
       setShowName(false)
-    }, 5000)
+    }, 7000)
 
     return () => {
       clearInterval(countdownInterval)
