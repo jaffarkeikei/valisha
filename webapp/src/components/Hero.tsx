@@ -469,7 +469,7 @@ const Hero = () => {
             >
               <span className="text-white">Wear</span>
               <br />
-              <span className="text-gradient italic">Your Story</span>
+              <span className="text-gradient italic pr-2">Your Story</span>
             </motion.h1>
 
             <motion.p

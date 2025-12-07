@@ -220,20 +220,6 @@ const Designer = () => {
 
             {/* Right - Preview */}
             <div className="bg-earth-950/60 rounded-2xl p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-gray-500">Preview</span>
-                {designType === 'flag' && selectedFlagData && (
-                  <span className="text-xs text-gray-400">
-                    {selectedFlagData.rows.length} rows
-                  </span>
-                )}
-                {designType === 'name' && customName && (
-                  <span className="text-xs text-gray-400">
-                    11 rows × {beadGrid.grid[0]?.length || 0} beads
-                  </span>
-                )}
-              </div>
-              
               {/* Bead Preview */}
               <div className="flex-1 flex items-center justify-center min-h-[200px] overflow-auto py-4">
                 {designType === 'flag' && beadGrid.grid.length > 0 && (
@@ -267,43 +253,6 @@ const Designer = () => {
                 )}
               </div>
 
-              {/* Color breakdown for flags */}
-              {designType === 'flag' && selectedFlagData && (
-                <div className="mt-4 pt-3 border-t border-white/10">
-                  <div className="flex flex-wrap gap-2">
-                    {[...new Set(selectedFlagData.rows)].map((color, i) => (
-                      <div key={i} className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded">
-                        <div 
-                          className="w-3 h-3 rounded-full" 
-                          style={{ backgroundColor: color }}
-                        />
-                        <span className="text-xs text-gray-400">
-                          {selectedFlagData.rows.filter(c => c === color).length}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Color summary for names */}
-              {designType === 'name' && customName && (
-                <div className="mt-4 pt-3 border-t border-white/10">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: textColor }} />
-                      <span className="text-xs text-gray-400">Text</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <div 
-                        className="w-3 h-3 rounded-full" 
-                        style={{ backgroundColor: bgColor, border: '1px solid #444' }} 
-                      />
-                      <span className="text-xs text-gray-400">Background</span>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
 

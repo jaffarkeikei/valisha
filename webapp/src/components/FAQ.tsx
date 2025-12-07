@@ -8,7 +8,7 @@ const FAQ = () => {
   const faqs = [
     {
       question: 'How do I measure my wrist?',
-      answer: 'Wrap a string or tape measure around your wrist. Most adults are 15-18cm. If between sizes, go larger for comfort.',
+      answer: 'Wrap a string or tape measure around your wrist. Most adults are 15-18cm.',
     },
     {
       question: 'How long until I receive it?',
