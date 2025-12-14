@@ -1,11 +1,48 @@
 // Flag definitions with accurate row patterns
 // RULE: Minimum 9 rows for proper size
 // RULE: Must have symmetry (odd total for centered elements)
+//
+// STAR PATTERN (5 rows): Simple star testing pattern
+// Row 0: armWidth 1 → ●
+// Row 1: armWidth 2 → ●●
+// Row 2: armWidth 4 → ●●●● (center - widest)
+// Row 3: armWidth 1 → ●
+// Row 4: armWidth 2 → ●●
+// Pattern: 1-2-4-1-2 creates simple star shape for testing brick stitch alignment
+
+// Row can be a simple color string or a pattern object
+export type FlagRow = string | {
+  base: string          // Base color for the row
+  center?: string       // Center color (for shields, stars, etc.)
+  centerWidth?: number  // Width of center element (default 4)
+  triangle?: {          // Triangle from left side
+    color: string
+    width: number       // How many beads at this row
+  }
+  dots?: {              // Two dots separated by a gap
+    color: string       // Color of the dots
+    dotWidth?: number   // Width of each dot (default 1)
+    separation?: number  // Number of beads between dots (default 5)
+    innerDots?: {       // Smaller dots inside the main dots
+      color: string     // Color of first inner dot (or both if color2 not specified)
+      color2?: string   // Color of second inner dot (defaults to color if not specified)
+      dotWidth?: number // Width of each inner dot (default 1)
+      offset?: number   // Offset from center of main dot for both dots (default 0 = centered)
+      offset1?: number  // Offset from center of main dot for first dot only (overrides offset if specified)
+      offset2?: number  // Offset from center of main dot for second dot only (overrides offset if specified)
+    }
+  }
+  star?: {              // Star pattern - specify width for each row
+    color: string       // Color of the star
+    armWidth?: number   // Width of star at this row (default 1)
+  }
+  centerLine?: string   // Thin vertical line (1 bead wide) in absolute center
+}
 
 export interface FlagDefinition {
   name: string
   emoji: string
-  rows: string[]
+  rows: FlagRow[]
 }
 
 export const FLAGS: Record<string, FlagDefinition> = {
@@ -14,16 +51,45 @@ export const FLAGS: Record<string, FlagDefinition> = {
   // EAST AFRICA
   // ═══════════════════════════════════════════════════════════════
 
-  // Kenya: 3 black, 1 white, 3 red, 1 white, 3 green = 11 rows
+  // Kenya: 3 black (with red shield top), 1 white, 3 red (with white shield center), 1 white, 3 green (with red shield bottom) = 11 rows
   'KE': {
     name: 'Kenya',
     emoji: '🇰🇪',
     rows: [
-      '#000000', '#000000', '#000000',
-      '#FFFFFF',
-      '#BB1600', '#BB1600', '#BB1600',
-      '#FFFFFF',
-      '#006600', '#006600', '#006600',
+      // row 1
+      { base: '#000000',},  
+      // row 2
+      { base: '#000000', center: '#BB1600', centerWidth: 1, dots: { color: '#FFFFFF', separation: 5}, }, 
+      // row 3
+      { base: '#000000', center: '#BB1600', centerWidth: 2, dots: { color: '#FFFFFF', separation: 4}, },  
+      // row 4
+      {base: '#FFFFFF', center: '#FFFFFF', centerWidth: 3, 
+        dots: { color: '#FFFFFF', dotWidth: 2, separation: 2,
+          innerDots: { color: '#BB1600', color2: '#FFFFFF', dotWidth: 1 } }, 
+        centerLine: '#BB1600'}, 
+      // row 5
+      { base: '#BB1600', center: '#FFFFFF', centerWidth: 2, 
+        dots: { color: '#000000', dotWidth: 1, separation: 2, 
+          innerDots: { color: '#000000', dotWidth: 2, offset1: -1, offset2: -1 } }, },  
+      // row 6
+      { base: '#BB1600', center: '#FFFFFF', centerWidth: 1, 
+        dots: { color: '#BB1600', dotWidth: 1, separation: 3, 
+          innerDots: { color: '#000000', dotWidth: 2, offset1: -1, offset2: -1 } },},    
+      // row 7
+      { base: '#BB1600', center: '#FFFFFF', centerWidth: 2, 
+        dots: { color: '#000000', dotWidth: 1, separation: 2, 
+          innerDots: { color: '#000000', dotWidth: 2, offset1: -1, offset2: -1 } },},   
+      // row 8
+      {base: '#FFFFFF', center: '#FFFFFF', centerWidth: 3, 
+        dots: { color: '#FFFFFF', dotWidth: 2, separation: 2,
+          innerDots: { color: '#BB1600', color2: '#FFFFFF', dotWidth: 1 } }, 
+        centerLine: '#BB1600'},   
+      // row 9
+      { base: '#006600', center: '#BB1600', centerWidth: 2, dots: { color: '#FFFFFF', separation: 4 } },  
+      // row 10
+      { base: '#006600', center: '#BB1600', centerWidth: 1, dots: { color: '#FFFFFF', separation: 5 }},   
+      // row 11
+      { base: '#006600', },  
     ],
   },
 
@@ -40,38 +106,47 @@ export const FLAGS: Record<string, FlagDefinition> = {
     ],
   },
 
-  // Uganda: black-yellow-red repeated = 9 rows
+  // Uganda: 12 rows - 2 black, 2 yellow, 2 red, 2 black, 2 yellow, 2 red (no white)
   'UG': {
     name: 'Uganda',
     emoji: '🇺🇬',
     rows: [
-      '#000000', '#000000', '#000000',
-      '#FCDC04', '#FCDC04', '#FCDC04',
-      '#D90000', '#D90000', '#D90000',
+      '#000000', '#000000',              // Black band 1 (2 rows)
+      '#FCDC04', '#FCDC04',              // Yellow band 1 (2 rows)
+      '#D90000', '#D90000',              // Red band 1 (2 rows)
+      '#000000', '#000000',              // Black band 2 (2 rows)
+      '#FCDC04', '#FCDC04',              // Yellow band 2 (2 rows)
+      '#D90000', '#D90000',              // Red band 2 (2 rows)
     ],
   },
 
-  // Rwanda: 4 blue, 2 yellow, 3 green = 9 rows
+  // Rwanda: 5 blue, 2 yellow, 2 green = 9 rows
   'RW': {
     name: 'Rwanda',
     emoji: '🇷🇼',
     rows: [
-      '#00A1DE', '#00A1DE', '#00A1DE', '#00A1DE',
+      '#00A1DE', '#00A1DE', '#00A1DE', '#00A1DE', '#00A1DE',
       '#FAD201', '#FAD201',
-      '#1A8C36', '#1A8C36', '#1A8C36',
+      '#1A8C36', '#1A8C36',
     ],
   },
 
-  // Burundi: 3 red, 1 white, 3 green, 1 white, 3 red = 11 rows (symmetric)
+  // Burundi: White saltire (X) dividing red (top/bottom) and green (sides), white disc with 3 stars = 11 rows
   'BI': {
     name: 'Burundi',
     emoji: '🇧🇮',
     rows: [
-      '#CE1126', '#CE1126', '#CE1126',
-      '#FFFFFF',
-      '#1EB53A', '#1EB53A', '#1EB53A',
-      '#FFFFFF',
-      '#CE1126', '#CE1126', '#CE1126',
+      '#CE1126',                                           // Red top
+      { base: '#CE1126', center: '#FFFFFF', centerWidth: 2 },  // Red with white diagonal
+      { base: '#CE1126', center: '#FFFFFF', centerWidth: 4 },  // White diagonal widening
+      { base: '#1EB53A', center: '#FFFFFF', centerWidth: 6 },  // Green sides, white center
+      { base: '#1EB53A', center: '#FFFFFF', centerWidth: 8 },  // Green sides, white wider
+      { base: '#FFFFFF', center: '#CE1126', centerWidth: 2 },  // White disc with red star
+      { base: '#1EB53A', center: '#FFFFFF', centerWidth: 8 },  // Green sides, white wider
+      { base: '#1EB53A', center: '#FFFFFF', centerWidth: 6 },  // Green sides, white center
+      { base: '#CE1126', center: '#FFFFFF', centerWidth: 4 },  // White diagonal widening
+      { base: '#CE1126', center: '#FFFFFF', centerWidth: 2 },  // Red with white diagonal
+      '#CE1126',                                           // Red bottom
     ],
   },
 
@@ -97,38 +172,54 @@ export const FLAGS: Record<string, FlagDefinition> = {
     ],
   },
 
-  // Somalia: all blue with white star center = 9 rows
+  // Somalia: all blue with white simple star = 9 rows (5-row star in center)
   'SO': {
     name: 'Somalia',
     emoji: '🇸🇴',
     rows: [
-      '#4189DD', '#4189DD', '#4189DD',
-      '#4189DD', '#FFFFFF', '#4189DD',
-      '#4189DD', '#4189DD', '#4189DD',
+      '#4189DD', '#4189DD',  // Blue rows above star
+      { base: '#4189DD', star: { color: '#FFFFFF', armWidth: 2 } },  // Star row 0: width 1
+      { base: '#4189DD', star: { color: '#FFFFFF', armWidth: 3 } },  // Star row 1: width 2
+      { base: '#4189DD', star: { color: '#FFFFFF', armWidth: 6 } },  // Star row 2: width 4 (center)
+      { base: '#4189DD', star: { color: '#FFFFFF', armWidth: 3 } },  // Star row 3: width 1
+      { base: '#4189DD', star: { color: '#FFFFFF', armWidth: 2 } },  // Star row 4: width 2
+      '#4189DD', '#4189DD',  // Blue rows below star
     ],
   },
 
-  // Djibouti: 4 light blue, 1 white, 4 green = 9 rows
+  // Djibouti: Light blue top, green bottom, white triangle with red star = 9 rows
   'DJ': {
     name: 'Djibouti',
     emoji: '🇩🇯',
     rows: [
-      '#6AB2E7', '#6AB2E7', '#6AB2E7', '#6AB2E7',
-      '#FFFFFF',
-      '#12AD2B', '#12AD2B', '#12AD2B', '#12AD2B',
+      { base: '#6AB2E7', triangle: { color: '#FFFFFF', width: 2 } },   // Light blue with small white
+      { base: '#6AB2E7', triangle: { color: '#FFFFFF', width: 4 } },   // Light blue with white
+      { base: '#6AB2E7', triangle: { color: '#FFFFFF', width: 5 } },   // Light blue with white
+      { base: '#6AB2E7', triangle: { color: '#FFFFFF', width: 6 } },   // Light blue with white wider
+      { base: '#6AB2E7', triangle: { color: '#D7141A', width: 3 } },   // Center row - red star in white area
+      { base: '#12AD2B', triangle: { color: '#FFFFFF', width: 6 } },   // Green with white wider
+      { base: '#12AD2B', triangle: { color: '#FFFFFF', width: 5 } },   // Green with white
+      { base: '#12AD2B', triangle: { color: '#FFFFFF', width: 4 } },   // Green with white
+      { base: '#12AD2B', triangle: { color: '#FFFFFF', width: 2 } },   // Green with small white
     ],
   },
 
-  // South Sudan: 2 black, 1 white, 3 red, 1 white, 2 green = 9 rows
+  // South Sudan: 3 black, 1 white, 3 red, 1 white, 3 green = 11 rows with blue triangle and yellow star
   'SS': {
     name: 'South Sudan',
     emoji: '🇸🇸',
     rows: [
-      '#000000', '#000000',
-      '#FFFFFF',
-      '#DA1F26', '#DA1F26', '#DA1F26',
-      '#FFFFFF',
-      '#078930', '#078930',
+      { base: '#000000', triangle: { color: '#0057B8', width: 2 } },   // Black with small blue
+      { base: '#000000', triangle: { color: '#0057B8', width: 4 } },   // Black with blue
+      { base: '#000000', triangle: { color: '#0057B8', width: 5 } },   // Black with blue
+      { base: '#FFFFFF', triangle: { color: '#0057B8', width: 6 } },   // White with blue
+      { base: '#DA1F26', triangle: { color: '#0057B8', width: 7 } },   // Red with blue
+      { base: '#DA1F26', triangle: { color: '#FCDD09', width: 4 } },  // Red with yellow star (center of triangle)
+      { base: '#DA1F26', triangle: { color: '#0057B8', width: 7 } },   // Red with blue
+      { base: '#FFFFFF', triangle: { color: '#0057B8', width: 6 } },   // White with blue
+      { base: '#078930', triangle: { color: '#0057B8', width: 5 } },   // Green with blue
+      { base: '#078930', triangle: { color: '#0057B8', width: 4 } },   // Green with blue
+      { base: '#078930', triangle: { color: '#0057B8', width: 2 } },   // Green with small blue
     ],
   },
 
@@ -368,7 +459,7 @@ export const FLAGS: Record<string, FlagDefinition> = {
   },
 
   // South Africa: complex pattern = 9 rows
-  'ZA': {
+  'ZA': { 
     name: 'South Africa',
     emoji: '🇿🇦',
     rows: [
@@ -2196,6 +2287,14 @@ export const FLAG_LIST = Object.entries(FLAGS).map(([code, flag]) => ({
   ...flag,
 }))
 
+// Helper to get the base color from a FlagRow
+export function getRowColor(row: FlagRow): string {
+  if (typeof row === 'string') {
+    return row
+  }
+  return row.base
+}
+
 // Generate bead grid for a flag
 export function generateFlagGrid(
   flagCode: string,
@@ -2206,18 +2305,130 @@ export function generateFlagGrid(
     return { grid: [], rows: 0 }
   }
 
-  const rows = flag.rows.length
+  const numRows = flag.rows.length
   const grid: string[][] = []
 
-  for (let row = 0; row < rows; row++) {
+  for (let row = 0; row < numRows; row++) {
+    const rowDef = flag.rows[row]
     const rowColors: string[] = []
-    for (let col = 0; col < beadsPerRow; col++) {
-      rowColors.push(flag.rows[row])
+
+    if (typeof rowDef === 'string') {
+      // Simple row - single color
+      for (let col = 0; col < beadsPerRow; col++) {
+        rowColors.push(rowDef)
+      }
+    } else {
+      // Complex row with patterns
+      const centerWidth = rowDef.centerWidth ?? 4
+      const cStart = Math.floor((beadsPerRow - centerWidth) / 2)
+      const cEnd = cStart + centerWidth
+
+      for (let col = 0; col < beadsPerRow; col++) {
+        let color = rowDef.base // Default to base color
+        
+        // Check for triangle pattern first
+        if (rowDef.triangle && col < rowDef.triangle.width) {
+          color = rowDef.triangle.color
+        }
+        // Check for star pattern
+        else if (rowDef.star) {
+          const width = rowDef.star.armWidth ?? 1
+          const starStart = Math.floor((beadsPerRow - width) / 2)
+          const starEnd = starStart + width
+          
+          if (col >= starStart && col < starEnd) {
+            color = rowDef.star.color
+          }
+        }
+        // Check for dots pattern (highest priority for specific positions)
+        else if (rowDef.dots) {
+          const dotWidth = rowDef.dots.dotWidth ?? 1
+          const separation = rowDef.dots.separation ?? 5
+          const totalDotsWidth = dotWidth * 2 + separation
+          const dotsStart = Math.floor((beadsPerRow - totalDotsWidth) / 2)
+          const firstDotEnd = dotsStart + dotWidth
+          const secondDotStart = firstDotEnd + separation
+          const secondDotEnd = secondDotStart + dotWidth
+          
+          if (col >= dotsStart && col < firstDotEnd) {
+            // First dot - check for inner dots
+            if (rowDef.dots.innerDots) {
+              const innerDotWidth = rowDef.dots.innerDots.dotWidth ?? 1
+              // Use offset1 for first dot if specified, otherwise use offset
+              const offset = rowDef.dots.innerDots.offset1 ?? rowDef.dots.innerDots.offset ?? 0
+              // Center bead of main dot (middle bead)
+              const firstDotCenter = dotsStart + Math.floor(dotWidth / 2)
+              // Inner dot starts from the center bead
+              const innerDotStart = firstDotCenter + offset
+              const innerDotEnd = innerDotStart + innerDotWidth
+              
+              if (col >= innerDotStart && col < innerDotEnd) {
+                color = rowDef.dots.innerDots.color
+              } else {
+                color = rowDef.dots.color
+              }
+            } else {
+              color = rowDef.dots.color
+            }
+          } else if (col >= secondDotStart && col < secondDotEnd) {
+            // Second dot - check for inner dots
+            if (rowDef.dots.innerDots) {
+              const innerDotWidth = rowDef.dots.innerDots.dotWidth ?? 1
+              // Use offset2 for second dot if specified, otherwise use offset
+              const offset = rowDef.dots.innerDots.offset2 ?? rowDef.dots.innerDots.offset ?? 0
+              // Center bead of main dot (middle bead)
+              const secondDotCenter = secondDotStart + Math.floor(dotWidth / 2)
+              // Inner dot starts from the center bead
+              const innerDotStart = secondDotCenter + offset
+              const innerDotEnd = innerDotStart + innerDotWidth
+              
+              if (col >= innerDotStart && col < innerDotEnd) {
+                // Use color2 for second dot if specified, otherwise use same color
+                color = rowDef.dots.innerDots.color2 ?? rowDef.dots.innerDots.color
+              } else {
+                color = rowDef.dots.color
+              }
+            } else {
+              color = rowDef.dots.color
+            }
+          } else {
+            // Not a dot position - check for center line first (highest priority)
+            const centerPos = Math.floor(beadsPerRow / 2)
+            if (rowDef.centerLine && col === centerPos) {
+              color = rowDef.centerLine
+            }
+            // Then check for center pattern
+            else if (rowDef.center && col >= cStart && col < cEnd) {
+              color = rowDef.center
+            }
+            // Otherwise keep base color
+          }
+        }
+        // Check for center pattern (if no dots)
+        else if (rowDef.center && col >= cStart && col < cEnd) {
+          // Check for center line first (highest priority)
+          const centerPos = Math.floor(beadsPerRow / 2)
+          if (rowDef.centerLine && col === centerPos) {
+            color = rowDef.centerLine
+          } else {
+            color = rowDef.center
+          }
+        }
+        // Check for center line only (if no center pattern)
+        else if (rowDef.centerLine) {
+          const centerPos = Math.floor(beadsPerRow / 2)
+          if (col === centerPos) {
+            color = rowDef.centerLine
+          }
+        }
+        
+        rowColors.push(color)
+      }
     }
     grid.push(rowColors)
   }
 
-  return { grid, rows }
+  return { grid, rows: numRows }
 }
 
 // Generate name pattern

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { FLAGS } from '../utils/flags'
+import { FLAGS, getRowColor } from '../utils/flags'
 import { generateTextGrid } from '../utils/pixelFont'
 import BeadPattern from './BeadPattern'
 
@@ -44,8 +44,8 @@ const Gallery = () => {
                 
                 {/* Mini bead preview */}
                 <div className="flex flex-col items-center gap-px mb-2">
-                  {flag.rows.slice(0, 4).map((color, rowIndex) => (
-                    <div 
+                  {flag.rows.slice(0, 4).map((row, rowIndex) => (
+                    <div
                       key={rowIndex}
                       className="flex gap-px"
                       style={{ marginLeft: rowIndex % 2 === 1 ? 2 : 0 }}
@@ -54,7 +54,7 @@ const Gallery = () => {
                         <div
                           key={colIndex}
                           className="w-1.5 h-1.5 rounded-full"
-                          style={{ backgroundColor: color }}
+                          style={{ backgroundColor: getRowColor(row) }}
                         />
                       ))}
                     </div>

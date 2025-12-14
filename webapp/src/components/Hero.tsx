@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { FLAGS } from '../utils/flags'
+import { FLAGS, FlagRow, getRowColor } from '../utils/flags'
 import { useEffect, useState, useMemo } from 'react'
 
 // Artistic flowing flags visualization
@@ -336,7 +336,7 @@ const WavyBeadFlag = ({
   waveAmplitude = 8,
   waveFrequency = 0.3,
 }: {
-  colors: string[]
+  colors: FlagRow[]
   beadSize?: number
   beadsPerRow?: number
   waveAmplitude?: number
@@ -362,7 +362,7 @@ const WavyBeadFlag = ({
         paddingTop: waveAmplitude,
       }}
     >
-      {colors.map((color, rowIndex) => (
+      {colors.map((row, rowIndex) => (
         <div
           key={rowIndex}
           className="absolute flex"
@@ -382,7 +382,7 @@ const WavyBeadFlag = ({
                 style={{
                   width: beadSize,
                   height: beadSize,
-                  backgroundColor: color,
+                  backgroundColor: getRowColor(row),
                   boxShadow: `
                     inset 2px 2px 4px rgba(255,255,255,0.3),
                     inset -1px -1px 3px rgba(0,0,0,0.2),
@@ -401,7 +401,7 @@ const WavyBeadFlag = ({
 }
 
 // Individual flag bead component - shows mini flag pattern
-const FlagBead = ({ colors, size = 32 }: { colors: string[], size?: number }) => {
+const FlagBead = ({ colors, size = 32 }: { colors: FlagRow[], size?: number }) => {
   const displayRows = colors.slice(0, 5)
   const rowHeight = size / displayRows.length
 
@@ -419,11 +419,11 @@ const FlagBead = ({ colors, size = 32 }: { colors: string[], size?: number }) =>
       }}
     >
       <div className="w-full h-full flex flex-col">
-        {displayRows.map((color, i) => (
+        {displayRows.map((row, i) => (
           <div
             key={i}
             style={{
-              backgroundColor: color,
+              backgroundColor: getRowColor(row),
               height: rowHeight,
               width: '100%',
             }}
