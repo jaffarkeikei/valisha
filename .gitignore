@@ -1,3 +1,6 @@
+# Private documentation (not for public repo)
+docs/.private/
+
 # Dependencies
 node_modules/
 npm-debug.log*
