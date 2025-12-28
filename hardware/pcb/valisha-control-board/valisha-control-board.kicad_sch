@@ -1,0 +1,1277 @@
+(kicad_sch
+  (version 20231120)
+  (generator "claude")
+  (generator_version "1.0")
+  (uuid "a0000000-0000-0000-0000-000000000001")
+  (paper "A3")
+  (title_block
+    (title "Valisha Control Board")
+    (date "2024-12-15")
+    (rev "1.0")
+    (company "Valisha Project")
+    (comment 1 "ESP32-based bead weaving machine controller")
+    (comment 2 "4x TMC2209 stepper drivers, servos, sensors")
+  )
+
+  ; Power symbols
+  (symbol
+    (lib_id "power:+12V")
+    (at 25.4 25.4 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom no)
+    (on_board no)
+    (uuid "a0000001-0000-0000-0000-000000000001")
+  )
+
+  ; ============================================
+  ; POWER INPUT SECTION
+  ; ============================================
+
+  ; DC Barrel Jack J1
+  (symbol
+    (lib_id "Connector:Barrel_Jack_Switch")
+    (at 30.48 50.8 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "b0000001-0000-0000-0000-000000000001")
+    (property "Reference" "J1"
+      (at 30.48 43.18 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "DC_Jack_12V"
+      (at 30.48 45.72 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_BarrelJack:BarrelJack_Horizontal"
+      (at 31.75 51.435 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Schottky Diode D1 (reverse polarity protection)
+  (symbol
+    (lib_id "Device:D_Schottky")
+    (at 45.72 50.8 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "b0000002-0000-0000-0000-000000000001")
+    (property "Reference" "D1"
+      (at 45.72 46.99 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "SS34"
+      (at 45.72 48.26 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Diode_SMD:D_SMA"
+      (at 45.72 50.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Fuse F1
+  (symbol
+    (lib_id "Device:Fuse")
+    (at 60.96 50.8 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "b0000003-0000-0000-0000-000000000001")
+    (property "Reference" "F1"
+      (at 60.96 46.99 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "10A"
+      (at 60.96 48.26 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Fuse:Fuse_Blade_ATO_directSolder"
+      (at 60.96 50.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Bulk Capacitor C1
+  (symbol
+    (lib_id "Device:CP")
+    (at 76.2 55.88 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "b0000004-0000-0000-0000-000000000001")
+    (property "Reference" "C1"
+      (at 78.74 53.34 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "1000uF/25V"
+      (at 78.74 55.88 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
+      (at 76.2 55.88 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Power LED with resistor
+  (symbol
+    (lib_id "Device:LED")
+    (at 88.9 55.88 270)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "b0000005-0000-0000-0000-000000000001")
+    (property "Reference" "D2"
+      (at 91.44 53.34 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "PWR_LED"
+      (at 91.44 55.88 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "LED_SMD:LED_0805_2012Metric"
+      (at 88.9 55.88 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Device:R")
+    (at 88.9 45.72 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "b0000006-0000-0000-0000-000000000001")
+    (property "Reference" "R1"
+      (at 91.44 43.18 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "1K"
+      (at 91.44 45.72 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 88.9 45.72 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; ESP32 MODULE
+  ; ============================================
+
+  (symbol
+    (lib_id "RF_Module:ESP32-WROOM-32D")
+    (at 152.4 101.6 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "c0000001-0000-0000-0000-000000000001")
+    (property "Reference" "U1"
+      (at 152.4 60.96 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "ESP32-WROOM-32D"
+      (at 152.4 63.5 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "RF_Module:ESP32-WROOM-32"
+      (at 152.4 101.6 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ESP32 Decoupling Capacitors
+  (symbol
+    (lib_id "Device:C")
+    (at 119.38 76.2 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "c0000002-0000-0000-0000-000000000001")
+    (property "Reference" "C2"
+      (at 121.92 73.66 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "10uF"
+      (at 121.92 76.2 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+      (at 119.38 76.2 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Device:C")
+    (at 109.22 76.2 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "c0000003-0000-0000-0000-000000000001")
+    (property "Reference" "C3"
+      (at 111.76 73.66 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "100nF"
+      (at 111.76 76.2 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+      (at 109.22 76.2 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; EN Pull-up Resistor
+  (symbol
+    (lib_id "Device:R")
+    (at 119.38 88.9 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "c0000004-0000-0000-0000-000000000001")
+    (property "Reference" "R2"
+      (at 121.92 86.36 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "10K"
+      (at 121.92 88.9 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 119.38 88.9 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Boot Button
+  (symbol
+    (lib_id "Switch:SW_Push")
+    (at 119.38 104.14 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "c0000005-0000-0000-0000-000000000001")
+    (property "Reference" "SW1"
+      (at 119.38 99.06 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "BOOT"
+      (at 119.38 101.6 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342"
+      (at 119.38 104.14 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Reset Button
+  (symbol
+    (lib_id "Switch:SW_Push")
+    (at 119.38 116.84 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "c0000006-0000-0000-0000-000000000001")
+    (property "Reference" "SW2"
+      (at 119.38 111.76 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "RESET"
+      (at 119.38 114.3 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342"
+      (at 119.38 116.84 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; TMC2209 DRIVER SOCKETS (4x)
+  ; ============================================
+
+  ; Driver 1 - Carousel Motor
+  (symbol
+    (lib_id "Connector_Generic:Conn_02x08_Odd_Even")
+    (at 254 50.8 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000001-0000-0000-0000-000000000001")
+    (property "Reference" "J2"
+      (at 254 38.1 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "TMC2209_1_CAROUSEL"
+      (at 254 40.64 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_2x08_P2.54mm_Vertical"
+      (at 254 50.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Motor Connector 1
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x04")
+    (at 279.4 50.8 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000002-0000-0000-0000-000000000001")
+    (property "Reference" "J3"
+      (at 279.4 43.18 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "MOTOR_1"
+      (at 279.4 45.72 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical"
+      (at 279.4 50.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Decoupling Cap for Driver 1
+  (symbol
+    (lib_id "Device:CP")
+    (at 238.76 55.88 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000003-0000-0000-0000-000000000001")
+    (property "Reference" "C4"
+      (at 241.3 53.34 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "100uF/25V"
+      (at 241.3 55.88 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
+      (at 238.76 55.88 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Driver 2 - X Axis
+  (symbol
+    (lib_id "Connector_Generic:Conn_02x08_Odd_Even")
+    (at 254 88.9 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000004-0000-0000-0000-000000000001")
+    (property "Reference" "J4"
+      (at 254 76.2 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "TMC2209_2_X_AXIS"
+      (at 254 78.74 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_2x08_P2.54mm_Vertical"
+      (at 254 88.9 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Motor Connector 2
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x04")
+    (at 279.4 88.9 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000005-0000-0000-0000-000000000001")
+    (property "Reference" "J5"
+      (at 279.4 81.28 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "MOTOR_2"
+      (at 279.4 83.82 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical"
+      (at 279.4 88.9 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Decoupling Cap for Driver 2
+  (symbol
+    (lib_id "Device:CP")
+    (at 238.76 93.98 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000006-0000-0000-0000-000000000001")
+    (property "Reference" "C5"
+      (at 241.3 91.44 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "100uF/25V"
+      (at 241.3 93.98 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
+      (at 238.76 93.98 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Driver 3 - Z Axis
+  (symbol
+    (lib_id "Connector_Generic:Conn_02x08_Odd_Even")
+    (at 254 127 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000007-0000-0000-0000-000000000001")
+    (property "Reference" "J6"
+      (at 254 114.3 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "TMC2209_3_Z_AXIS"
+      (at 254 116.84 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_2x08_P2.54mm_Vertical"
+      (at 254 127 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Motor Connector 3
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x04")
+    (at 279.4 127 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000008-0000-0000-0000-000000000001")
+    (property "Reference" "J7"
+      (at 279.4 119.38 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "MOTOR_3"
+      (at 279.4 121.92 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical"
+      (at 279.4 127 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Decoupling Cap for Driver 3
+  (symbol
+    (lib_id "Device:CP")
+    (at 238.76 132.08 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000009-0000-0000-0000-000000000001")
+    (property "Reference" "C6"
+      (at 241.3 129.54 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "100uF/25V"
+      (at 241.3 132.08 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
+      (at 238.76 132.08 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Driver 4 - Spare/Rotary
+  (symbol
+    (lib_id "Connector_Generic:Conn_02x08_Odd_Even")
+    (at 254 165.1 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000010-0000-0000-0000-000000000001")
+    (property "Reference" "J8"
+      (at 254 152.4 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "TMC2209_4_SPARE"
+      (at 254 154.94 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_2x08_P2.54mm_Vertical"
+      (at 254 165.1 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Motor Connector 4
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x04")
+    (at 279.4 165.1 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000011-0000-0000-0000-000000000001")
+    (property "Reference" "J9"
+      (at 279.4 157.48 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "MOTOR_4"
+      (at 279.4 160.02 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical"
+      (at 279.4 165.1 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Decoupling Cap for Driver 4
+  (symbol
+    (lib_id "Device:CP")
+    (at 238.76 170.18 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "d0000012-0000-0000-0000-000000000001")
+    (property "Reference" "C7"
+      (at 241.3 167.64 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "100uF/25V"
+      (at 241.3 170.18 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
+      (at 238.76 170.18 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; SERVO CONNECTORS (4x)
+  ; ============================================
+
+  ; Servo 1 - Picker
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x03")
+    (at 320.04 50.8 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "e0000001-0000-0000-0000-000000000001")
+    (property "Reference" "J10"
+      (at 320.04 43.18 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "SERVO1_PICKER"
+      (at 320.04 45.72 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+      (at 320.04 50.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Servo 2 - Gripper
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x03")
+    (at 320.04 68.58 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "e0000002-0000-0000-0000-000000000001")
+    (property "Reference" "J11"
+      (at 320.04 60.96 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "SERVO2_GRIPPER"
+      (at 320.04 63.5 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+      (at 320.04 68.58 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Servo 3 - Spare
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x03")
+    (at 320.04 86.36 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "e0000003-0000-0000-0000-000000000001")
+    (property "Reference" "J12"
+      (at 320.04 78.74 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "SERVO3"
+      (at 320.04 81.28 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+      (at 320.04 86.36 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Servo 4 - Spare
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x03")
+    (at 320.04 104.14 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "e0000004-0000-0000-0000-000000000001")
+    (property "Reference" "J13"
+      (at 320.04 96.52 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "SERVO4"
+      (at 320.04 99.06 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+      (at 320.04 104.14 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; I2C HEADER
+  ; ============================================
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x04")
+    (at 320.04 127 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "f0000001-0000-0000-0000-000000000001")
+    (property "Reference" "J14"
+      (at 320.04 119.38 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "I2C"
+      (at 320.04 121.92 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal"
+      (at 320.04 127 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; I2C Pull-up Resistors
+  (symbol
+    (lib_id "Device:R")
+    (at 304.8 121.92 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "f0000002-0000-0000-0000-000000000001")
+    (property "Reference" "R3"
+      (at 307.34 119.38 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "4.7K"
+      (at 307.34 121.92 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 304.8 121.92 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Device:R")
+    (at 297.18 121.92 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "f0000003-0000-0000-0000-000000000001")
+    (property "Reference" "R4"
+      (at 299.72 119.38 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "4.7K"
+      (at 299.72 121.92 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 297.18 121.92 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; LIMIT SWITCH HEADERS (6x)
+  ; ============================================
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x02")
+    (at 355.6 50.8 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "g0000001-0000-0000-0000-000000000001")
+    (property "Reference" "J15"
+      (at 355.6 43.18 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "LIMIT_X_MIN"
+      (at 355.6 45.72 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+      (at 355.6 50.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x02")
+    (at 355.6 63.5 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "g0000002-0000-0000-0000-000000000001")
+    (property "Reference" "J16"
+      (at 355.6 55.88 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "LIMIT_X_MAX"
+      (at 355.6 58.42 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+      (at 355.6 63.5 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x02")
+    (at 355.6 76.2 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "g0000003-0000-0000-0000-000000000001")
+    (property "Reference" "J17"
+      (at 355.6 68.58 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "LIMIT_Z_MIN"
+      (at 355.6 71.12 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+      (at 355.6 76.2 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x02")
+    (at 355.6 88.9 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "g0000004-0000-0000-0000-000000000001")
+    (property "Reference" "J18"
+      (at 355.6 81.28 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "LIMIT_Z_MAX"
+      (at 355.6 83.82 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+      (at 355.6 88.9 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x02")
+    (at 355.6 101.6 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "g0000005-0000-0000-0000-000000000001")
+    (property "Reference" "J19"
+      (at 355.6 93.98 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "LIMIT_CAROUSEL"
+      (at 355.6 96.52 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+      (at 355.6 101.6 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x02")
+    (at 355.6 114.3 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "g0000006-0000-0000-0000-000000000001")
+    (property "Reference" "J20"
+      (at 355.6 106.68 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "E_STOP"
+      (at 355.6 109.22 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+      (at 355.6 114.3 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Pull-up resistors for limit switches
+  (symbol
+    (lib_id "Device:R_Pack04")
+    (at 340.36 76.2 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "g0000007-0000-0000-0000-000000000001")
+    (property "Reference" "RN1"
+      (at 340.36 66.04 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "10K x4"
+      (at 340.36 68.58 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Resistor_SMD:R_Array_Convex_4x0603"
+      (at 340.36 76.2 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Device:R_Pack02")
+    (at 340.36 101.6 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "g0000008-0000-0000-0000-000000000001")
+    (property "Reference" "RN2"
+      (at 340.36 93.98 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "10K x2"
+      (at 340.36 96.52 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Resistor_SMD:R_Array_Convex_2x0603"
+      (at 340.36 101.6 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; LED STRIP CONNECTOR
+  ; ============================================
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x03")
+    (at 355.6 139.7 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "h0000001-0000-0000-0000-000000000001")
+    (property "Reference" "J21"
+      (at 355.6 132.08 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "LED_STRIP"
+      (at 355.6 134.62 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical"
+      (at 355.6 139.7 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; LED Data Resistor
+  (symbol
+    (lib_id "Device:R")
+    (at 340.36 139.7 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "h0000002-0000-0000-0000-000000000001")
+    (property "Reference" "R5"
+      (at 342.9 137.16 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "330R"
+      (at 342.9 139.7 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 340.36 139.7 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; VACUUM PUMP MOSFET DRIVER
+  ; ============================================
+
+  (symbol
+    (lib_id "Transistor_FET:IRLZ44N")
+    (at 355.6 165.1 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "i0000001-0000-0000-0000-000000000001")
+    (property "Reference" "Q1"
+      (at 360.68 162.56 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "IRLZ44N"
+      (at 360.68 165.1 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Package_TO_SOT_THT:TO-220-3_Vertical"
+      (at 355.6 165.1 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Gate resistor
+  (symbol
+    (lib_id "Device:R")
+    (at 340.36 165.1 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "i0000002-0000-0000-0000-000000000001")
+    (property "Reference" "R6"
+      (at 342.9 162.56 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "1K"
+      (at 342.9 165.1 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 340.36 165.1 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Gate pulldown
+  (symbol
+    (lib_id "Device:R")
+    (at 347.98 170.18 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "i0000003-0000-0000-0000-000000000001")
+    (property "Reference" "R7"
+      (at 347.98 167.64 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "10K"
+      (at 347.98 172.72 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 347.98 170.18 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Flyback diode
+  (symbol
+    (lib_id "Device:D")
+    (at 365.76 157.48 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "i0000004-0000-0000-0000-000000000001")
+    (property "Reference" "D3"
+      (at 368.3 154.94 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "1N4007"
+      (at 368.3 157.48 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Diode_SMD:D_SMA"
+      (at 365.76 157.48 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; Pump connector
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x02")
+    (at 378.46 157.48 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "i0000005-0000-0000-0000-000000000001")
+    (property "Reference" "J22"
+      (at 378.46 149.86 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "VACUUM_PUMP"
+      (at 378.46 152.4 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "TerminalBlock:TerminalBlock_bornier-2_P5.08mm"
+      (at 378.46 157.48 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; EXTERNAL POWER INPUT (5V, 3.3V)
+  ; ============================================
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x02")
+    (at 101.6 50.8 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "j0000001-0000-0000-0000-000000000001")
+    (property "Reference" "J23"
+      (at 101.6 43.18 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "5V_IN"
+      (at 101.6 45.72 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "TerminalBlock:TerminalBlock_bornier-2_P5.08mm"
+      (at 101.6 50.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Connector_Generic:Conn_01x02")
+    (at 101.6 68.58 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (uuid "j0000002-0000-0000-0000-000000000001")
+    (property "Reference" "J24"
+      (at 101.6 60.96 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "3V3_IN"
+      (at 101.6 63.5 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "TerminalBlock:TerminalBlock_bornier-2_P5.08mm"
+      (at 101.6 68.58 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; MOUNTING HOLES
+  ; ============================================
+
+  (symbol
+    (lib_id "Mechanical:MountingHole")
+    (at 20.32 177.8 0)
+    (unit 1)
+    (exclude_from_sim yes)
+    (in_bom no)
+    (on_board yes)
+    (uuid "k0000001-0000-0000-0000-000000000001")
+    (property "Reference" "H1"
+      (at 22.86 177.8 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "M3"
+      (at 25.4 177.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+      (at 20.32 177.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Mechanical:MountingHole")
+    (at 30.48 177.8 0)
+    (unit 1)
+    (exclude_from_sim yes)
+    (in_bom no)
+    (on_board yes)
+    (uuid "k0000002-0000-0000-0000-000000000001")
+    (property "Reference" "H2"
+      (at 33.02 177.8 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "M3"
+      (at 35.56 177.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+      (at 30.48 177.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Mechanical:MountingHole")
+    (at 40.64 177.8 0)
+    (unit 1)
+    (exclude_from_sim yes)
+    (in_bom no)
+    (on_board yes)
+    (uuid "k0000003-0000-0000-0000-000000000001")
+    (property "Reference" "H3"
+      (at 43.18 177.8 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "M3"
+      (at 45.72 177.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+      (at 40.64 177.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  (symbol
+    (lib_id "Mechanical:MountingHole")
+    (at 50.8 177.8 0)
+    (unit 1)
+    (exclude_from_sim yes)
+    (in_bom no)
+    (on_board yes)
+    (uuid "k0000004-0000-0000-0000-000000000001")
+    (property "Reference" "H4"
+      (at 53.34 177.8 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "M3"
+      (at 55.88 177.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+      (at 50.8 177.8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
+  ; ============================================
+  ; TEXT NOTES
+  ; ============================================
+
+  (text "POWER INPUT SECTION"
+    (at 50.8 30.48 0)
+    (effects (font (size 2.54 2.54) bold))
+  )
+
+  (text "ESP32 CONTROLLER"
+    (at 152.4 55.88 0)
+    (effects (font (size 2.54 2.54) bold))
+  )
+
+  (text "TMC2209 STEPPER DRIVERS"
+    (at 264.16 30.48 0)
+    (effects (font (size 2.54 2.54) bold))
+  )
+
+  (text "SERVO OUTPUTS"
+    (at 320.04 38.1 0)
+    (effects (font (size 2.54 2.54) bold))
+  )
+
+  (text "LIMIT SWITCHES & I/O"
+    (at 355.6 38.1 0)
+    (effects (font (size 2.54 2.54) bold))
+  )
+
+  (text "Notes:\n1. External LM2596 modules provide 5V and 3.3V\n2. TMC2209 modules plug into 2x8 sockets\n3. All limit switches are NC (normally closed)\n4. LED strip is WS2812B compatible"
+    (at 20.32 195.58 0)
+    (effects (font (size 1.524 1.524)))
+  )
+
+)
